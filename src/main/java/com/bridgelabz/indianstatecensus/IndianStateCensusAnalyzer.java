@@ -1,57 +1,29 @@
 package com.bridgelabz.indianstatecensus;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-
 import java.io.Reader;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.List;
 
-import com.bridgelabz.indianstatecensus.CustomExceptionService.ExceptionType;
-import com.opencsv.CSVReader;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
-import com.opencsv.exceptions.CsvValidationException;
-
 
 public class IndianStateCensusAnalyzer
 {
 	private static final String FILE_PATH = "D:\\IndianStateCensusAnalyzer_Day29\\src\\Resource";
-	String[] headers = {"State", "Population", "AreaInSqKm", "DensityPerSqKm"};
+	private static final String INDIAN_STATE_CENCUS = "/IndiaStateCensusData.csv";
 
-	public List<StateCences> readInIndiaStateCensusData(String fileName) throws CsvValidationException 
+	public List<StateCences> readInIndiaStateCensusData() 
 	{
 		try 
 		{
-			if (!fileName.split("\\.")[1].equals("csv"))
-			{
-				throw new CustomExceptionService(ExceptionType.WRONG_FILE_TYPE,"enter proper extension");
-			}			
-			
-			@SuppressWarnings("resource")
-			String fileHeaders[] = new CSVReader(new FileReader(FILE_PATH+fileName)).readNext();
-			if (!Arrays.toString(fileHeaders).equals(Arrays.toString(headers)))
-			{				
-				throw new CustomExceptionService(ExceptionType.WRONG_HEADER,"enter proper extension");
-			}
-			Reader reader = Files.newBufferedReader(Paths.get(FILE_PATH+fileName));   //reader to read contacts
+			Reader reader = Files.newBufferedReader(Paths.get(FILE_PATH+INDIAN_STATE_CENCUS));   //reader to read contacts
 			CsvToBean<StateCences> csvToBean = new CsvToBeanBuilder<StateCences>(reader)
 					.withType(StateCences.class)
 					.withIgnoreLeadingWhiteSpace(true)
 					.build();
 			return csvToBean.parse();   //Converting them to list
-		}
-		catch (NoSuchFileException e)
-		{
-			throw new CustomExceptionService(ExceptionType.FILE_NOT_FOUND,"File Not Found");
-		}
-		catch (FileNotFoundException e) 
-		{
-			throw new CustomExceptionService(ExceptionType.FILE_NOT_FOUND,"File Not Found");
 		}
 		catch (IOException e)
 		{
