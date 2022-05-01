@@ -1,6 +1,8 @@
 package com.bridgelabz.indianstatecensus;
 
-public class StateCences {
+public class StateCences 
+{
+	
 	private String state;
 	private String population;
 	private String areaInSqKm;
@@ -60,5 +62,3 @@ public class StateCences {
 	
 	
 }
-
-
